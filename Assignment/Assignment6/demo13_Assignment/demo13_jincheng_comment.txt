@@ -1,0 +1,6 @@
+What is the expected relation between the frequency spectra of the output and input signals? 
+Do the input and output spectra you observe match the theory?
+
+the output and input spectra are similar to each other, while the output one seems to have less noise
+
+Yes, the input and output spectra match the theory. 

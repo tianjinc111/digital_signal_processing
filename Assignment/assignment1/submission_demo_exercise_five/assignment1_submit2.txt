@@ -1,0 +1,31 @@
+3. Record wav files of your voice with identical settings, but use 8-bit and 32-bit formats. For these files,
+what values are returned by getsampwidth()?
+
+Answer:
+The sample width for 8 bit is 1 and the sample width for 32 bit format is 4
+
+
+4. The program write_sin_02.py generates a wave file with 32 bits per sample. Use MATLAB to read
+sin_02_mono.wav and determine the quantization size. What is the quantization size? How many
+quantization levels are there?
+
+the quantization size is 0.0157
+
+
+
+
+
+
+5. Use Python to generate a wav file of a sine wave at 8 bits per sample. Read your 8 bit/sample wav file SUBMIT
+into MATLAB and plot the signal to verify that it is a sine wave (zoom in if necessary to show the
+waveform). Verify that the quantization step size is as expected and verify its spectrum.
+(a) Is there any noticeable effect of a lower number of bits/sample on the sound quality (keeping the
+same number of samples/second)?
+(b) If yes, then try to explain the reasons?
+Submit (1) Python code, (2) generated 8-bits wav file, and (3) Matlab code for verifying waveform and
+quantization step size, and 4) written comments for answering (a) and (b).
+
+
+there is not notcieable difference 
+
+

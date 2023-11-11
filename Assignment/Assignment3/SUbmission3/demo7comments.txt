@@ -1,0 +1,3 @@
+I save the recoding as one after and one before wave file. the before is the original recording and after is the one filterd by the function
+
+It seems that the after is more clear and stable. 

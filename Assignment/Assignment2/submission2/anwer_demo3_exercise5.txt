@@ -1,0 +1,3 @@
+gain should be set no larger than (2^15-1)/a0
+
+A0 is the amplitude of first wave

@@ -1,0 +1,19 @@
+Since we are going to have the chorus effect and GUI with slider that coudl control
+either frequency, LFO depth, or gain，I am thinking of implementing the concepts and code from our previous 
+assignment and class that could be helpful. 
+
+First, for the interpolation and circular buffer, I suppose the code from demo8 and demo10 could be helpful where we are going to implementing
+the function:
+y0 = x0 + gain.get() * ((1 - frac) * buffer[kr_prev] + frac * buffer[kr_next]
+
+and function:
+
+ kr + 1 + depth.get() / 1000 * math.sin(2 * math.pi * frequency.get() * n / RATE)
+
+ moreover, since wer are going to apply delay effect, with two delays, I add one more buffer and 
+
+ for the GUI, since we have down similar stuff in demo17 assignment. What we need to do is add a new slider 
+ for depth. 
+
+ also=, the most importanbt things is in the stream p.open, always set the frame_per_buffer to be equal to buffer_len; otherwise,
+ the voice of output will be completely a noise. 

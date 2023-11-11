@@ -1,0 +1,207 @@
+<!Doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Xiaobing</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/vue.min.js"></script>
+    <script src="../js/vue-resource.min.js"></script>
+    <script src="../js/record.js"></script>
+    <script src="../js/config.js"></script>
+    <style>
+        .longtext {
+            min-height: 200px;
+        }
+    </style>
+</head>
+<body>
+<div class="main" id="app">
+    <div class="top">
+        <div class="top-left">
+            <div class="header">
+                <img id="header-image" src="../images/bingbing.jpg"
+                     style="width:48px;height:48px;border-radius: 50%;">
+            </div>
+
+            <div class="nickname">
+                <p id="nickname">Bingbing</p>
+            </div>
+
+        </div>
+        <div class="top-type">
+            <a href="#" class="news icon-site"></a>
+            <a href="#" class="friend icon-site"></a>
+            <a href="#" class="file icon-site"></a>
+        </div>
+        <div class="top-right">
+            <i class="ic-menu ic-same"></i>
+            <i class="ic-shrink ic-same"></i>
+            <i class="ic-boost ic-same"></i>
+        </div>
+    </div>
+    <div class="box">
+        <div class="box-right">
+            <div class="recvfrom">
+                <div class="nav-top">
+                    <p id="group-title" v-html="tips"></p>
+                </div>
+                <div class="news-top">
+                    <ul class="message">
+                        <li :style="{'min-height':(item.message.length >= 180 ? '200px':'100px')}"
+                            :class="item.from === 'bingbing' ? 'other':'self'" v-for="item in message">
+                            <div class="avatar"><img
+                                    :src="item.from === 'bingbing' ? '../images/bingbing.jpg':'../images/male-1.png'"
+                                    alt=""></div>
+                            <div class="msg">
+                                <p class="msg-name"
+                                   :style="item.from === 'bingbing'? '':'text-align:right'">{{ item.from }}</p>
+                                <p class="msg-text" v-html="item.message"></p>
+                                <time>{{ item.time }}</time>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sendto">
+                <p>&nbsp;</p>
+                <div class="but-text">
+                    <textarea name="" id="inputarea" v-model="content" cols="110" rows="6"
+                              style="resize: none;margin: 0 0 0 20px; width: 1000px; height: 113px;"
+                              @keyup.enter="send"></textarea>
+                    <a href="#" class="button" @click="send">SEND(enter)</a>
+                    <a href="#" class="button" @click="record">{{ recording ? 'STOP':'RECORD' }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            tips: '',
+            content: "",
+            recorder: "",
+            recording: false,
+            message: [
+                {
+                    from: "bingbing",
+                    to: "user",
+                    message: "Hello,I'm XiaoBing",
+                    time: now_time()
+                }
+            ]
+        },
+        mounted() {
+            //init recorder
+            this.recorder = new Recorder({
+                type: "wav",
+                bitRate: 16,
+                sampleRate: 16000,
+                bufferSize: 8192,
+            })
+        },
+        methods: {
+            record() {
+                if (!this.recording) {
+                    this.recording = true;
+                    this.tips = "voice recording"
+                    this.recorder.start()
+                } else {
+                    this.tips = ""
+                    this.recording = false;
+                    this.recorder.stop();
+                    this.sendRecord();
+                }
+            },
+            send() {
+                let _this = this;
+
+                // clear textarea content
+                if (!this.content.replace("\r", "").replace("\n", "")) {
+                    return false;
+                }
+
+                //get textarea value
+                let content = this.content;
+
+                //clear input
+                this.content = '';
+
+                //push data to message list
+                this.message.push({
+                    from: "you",
+                    to: "bingbing",
+                    message: content,
+                    time: now_time()
+                })
+
+                //Refresh the page after 100 milliseconds to display the latest message
+                setTimeout(function () {
+                    let div = document.getElementsByClassName('news-top')[0];
+                    div.scrollTop = div.scrollHeight;
+                }, 100)
+
+                this.getReply(content)
+            },
+            sendRecord() {
+                //send http request
+                let _this = this;
+                _this.tips = "parsing";
+                const formData = new FormData()
+                formData.append('file', this.recorder.getWAVBlob())
+                this.$http.post(BASE_URL + '/api/audio', formData, {emulateJSON: true}).then(function (res) {
+                    //receive voice text result
+                    _this.tips = ""
+                    _this.message.push({
+                        from: "you",
+                        to: "bingbing",
+                        message: res.body.data,
+                        time: now_time()
+                    })
+
+                    //Refresh the page after 100 milliseconds to display the latest message
+                    setTimeout(function () {
+                        let div = document.getElementsByClassName('news-top')[0];
+                        div.scrollTop = div.scrollHeight;
+                    }, 100)
+
+                    _this.getReply(res.body.data)
+                }, function (res) {
+                    console.log(res)
+                });
+            },
+            getReply(content) {
+                let _this = this;
+                _this.tips = "thinking"
+
+                //http request
+                this.$http.post(BASE_URL + '/api/reply', {
+                    content: content, //content
+                }, {emulateJSON: true}).then(function (res) {
+                    _this.tips = ""
+
+                    //receiver result
+                    this.message.push({
+                        from: "bingbing",
+                        to: "you",
+                        message: res.body.data,
+                        time: now_time()
+                    })
+
+                    //Refresh the page after 100 milliseconds to display the latest message
+                    setTimeout(function () {
+                        let div = document.getElementsByClassName('news-top')[0];
+                        div.scrollTop = div.scrollHeight;
+                    }, 100)
+                }, function (res) {
+                    console.log(res)
+                });
+            }
+        }
+    })
+</script>
+</body>
+</html>

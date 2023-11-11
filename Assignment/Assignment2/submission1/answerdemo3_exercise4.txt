@@ -1,0 +1,1 @@
+As the gain was setting to a extreme large number, the sound becomes to longer and lounder. 

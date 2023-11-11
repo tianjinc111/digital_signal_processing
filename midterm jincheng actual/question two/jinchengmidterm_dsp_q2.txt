@@ -1,0 +1,2 @@
+THis solution requires us to supresse the background noise. From observation, we can tell the tonal noise is a high frequency noise.
+What we need to do is use band-stop filter to filter out the wave with extremely high frequency. 

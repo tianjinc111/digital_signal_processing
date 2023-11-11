@@ -1,0 +1,28 @@
+
+Make a screen recording video demonstrating your solution to [Demo 12 - Ex 1].
+In your recording, introduce yourself with the AM effect running.
+Your video should not be more than 30 seconds in duration. 
+Try to make the sound good (try to avoid clipping, high noise, etc.)
+
+In your video recording, only the output speech (AM-effect speech) should be
+audible in the video, not the input speech.
+The computer sound should be recorded in the video, but not the microphone audio.
+This can be done in a few different ways.
+
+Mac users:
+One way is to use QuickTime with a 'Background Music' installed:
+https://apple.stackexchange.com/questions/371683/how-to-record-screen-with-the-audio-coming-from-your-mac .
+
+Windows users:
+You can use 'Xbox Game Bar' (should be installed by default in Win10) and screen record with muted mic.
+The only trick is that it records a single window; so you should start your python code, click on the figure and then start recording.
+You may press win + G to open this tool. Make sure to mute yourself when doing so.
+
+You may use Zoom to record this video with system audio output and without mic input.
+1. Register a personal Zoom account. (It seems that NYU accounts does not allow us to store the recordings locally.)
+2. Start a meeting using the personal account. MUTE yourself.
+3. Start recording, ignore the warning that the mic input may not be recorded.
+4. Share your computer screen in the meeting. In the prompted window, make sure you select "Share computer sound" in the checkbox.
+5. Run your Python code.
+6. Stop sharing, stop recording, then end the meeting. Now you should be able to get the video file you want.
+
